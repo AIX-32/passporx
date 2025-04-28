@@ -123,16 +123,25 @@
         cancelBtn.addEventListener('click', handleCancel);
     }
 
-
     function displayPasswords() {
-        const passwordsList = document.getElementById('passwordsList');
-        const savedPasswords = JSON.parse(localStorage.getItem('passwords') || '[]');
+    const passwordsList = document.getElementById('passwordsList');
+    const savedPasswords = JSON.parse(localStorage.getItem('passwords') || '[]');
+    
+    passwordsList.innerHTML = savedPasswords.map((entry, index) => {
+        const strength = calculatePasswordStrength(entry.password);
+        const isReused = checkPasswordReuse(entry.password, savedPasswords);
+        const isOld = checkPasswordAge(entry.date);
         
-        passwordsList.innerHTML = savedPasswords.map((entry, index) => `
+        return `
             <div class="password-entry">
                 <div class="entry-header">
                     <h3>${entry.name}</h3>
                     <a href="${entry.siteLink}" target="_blank">${entry.siteLink}</a>
+                    <div class="health-indicators">
+                        <span class="strength-indicator ${strength}"></span>
+                        ${isReused ? '<span class="reuse-indicator" title="Password reused">♻</span>' : ''}
+                        ${isOld ? '<span class="age-indicator" title="Password older than 6 months">🕒</span>' : ''}
+                    </div>
                 </div>
                 <div class="entry-password">
                     <input type="password" value="${entry.password}" readonly>
@@ -142,8 +151,10 @@
                 </div>
                 <div class="entry-date">${new Date(entry.date).toLocaleDateString()}</div>
             </div>
-        `).join('');
-    }
+        `;
+    }).join('');
+}
+
 
 
     function showNotification(message, type = 'success') {
@@ -210,5 +221,50 @@
     });
 
     displayPasswords();
+
+
+    function calculatePasswordStrength(password) {
+        let strength = 0;
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[a-z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+        return strength < 3 ? 'weak' : strength === 3 ? 'medium' : 'strong';
+    }
+
+    function checkPasswordReuse(password, allPasswords) {
+        return allPasswords.filter(p => p.password === password).length > 1;
+    }
+
+    function checkPasswordAge(createdDate) {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        return new Date(createdDate) < sixMonthsAgo;
+    }
+
+
+    function checkPasswordHealth() {
+        const savedPasswords = JSON.parse(localStorage.getItem('passwords') || '[]');
+        const warnings = [];
+    
+        savedPasswords.forEach((entry, index) => {
+            const strength = calculatePasswordStrength(entry.password);
+            const isReused = checkPasswordReuse(entry.password, savedPasswords);
+            const isOld = checkPasswordAge(entry.date);
+    
+            if (strength === 'weak') warnings.push(`Weak password for ${entry.name}`);
+            if (isReused) warnings.push(`Password reused for ${entry.name}`);
+            if (isOld) warnings.push(`Old password (6+ months) for ${entry.name}`);
+        });
+    
+        if (warnings.length > 0) {
+            showNotification(`Security warnings: ${warnings.join(', ')}`, 'warning');
+        }
+    }
+
+    // Run check on load and every 5 minutes
+    displayPasswords();
+    checkPasswordHealth();
+    setInterval(checkPasswordHealth, 300000);
 </script>
 </html>
