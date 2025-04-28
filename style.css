@@ -1,0 +1,492 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.3s ease;
+}
+
+:root {
+    --primary: #7e57c2; /* Purple instead of green */
+    --primary-light: #b085f5;
+    --primary-dark: #4d2c91;
+    --accent: #ff7043; /* Orange accent */
+    --text-light: #e0e0e0;
+    --text-dark: #212121;
+    --bg-dark: #1a1a1a;
+    --bg-card: rgba(30, 30, 30, 0.8);
+    --success: #66bb6a;
+    --danger: #ef5350;
+}
+
+body {
+    background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-light);
+}
+
+.container {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 800px;
+    border: 1px solid rgba(126, 87, 194, 0.3); /* Subtle purple border */
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(126, 87, 194, 0.1) 0%, transparent 60%);
+    z-index: -1;
+    animation: pulse 15s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(1.05); opacity: 0.8; }
+}
+
+h1 {
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    text-shadow: 0 0 15px rgba(126, 87, 194, 0.5);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.password-generator {
+    margin-bottom: 40px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--primary-light);
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid rgba(126, 87, 194, 0.5);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+    background: rgba(45, 45, 45, 0.7);
+    color: var(--text-light);
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 15px rgba(126, 87, 194, 0.3);
+    transform: translateY(-2px);
+}
+
+.password-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.password-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgba(45, 45, 45, 0.5);
+    border: 1px solid rgba(126, 87, 194, 0.2);
+}
+
+.password-options label:hover {
+    background: rgba(126, 87, 194, 0.1);
+    transform: translateY(-2px);
+}
+
+.generate-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.generate-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.generate-btn:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    box-shadow: 0 5px 15px rgba(126, 87, 194, 0.5);
+    transform: translateY(-2px);
+}
+
+.generate-btn:hover::before {
+    left: 100%;
+}
+
+.generated-password {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(45, 45, 45, 0.7);
+    border-radius: 8px;
+    border: 1px solid rgba(126, 87, 194, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.password-display {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#generatedPassword {
+    flex: 1;
+    font-family: monospace;
+    font-size: 18px;
+    color: var(--accent);
+    word-break: break-all;
+    text-shadow: 0 0 5px rgba(255, 112, 67, 0.3);
+    padding: 10px;
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 4px;
+}
+
+.copy-btn {
+    padding: 8px 16px;
+    background: rgba(45, 45, 45, 0.7);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.copy-btn:hover {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 112, 67, 0.5);
+    transform: translateY(-2px);
+}
+
+.saved-passwords {
+    margin-top: 40px;
+}
+
+.saved-passwords h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(126, 87, 194, 0.3);
+    position: relative;
+    display: inline-block;
+}
+
+.saved-passwords h2::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+.password-entry {
+    background: rgba(45, 45, 45, 0.7);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(126, 87, 194, 0.2);
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.password-entry:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(126, 87, 194, 0.5);
+}
+
+.entry-header {
+    margin-bottom: 15px;
+}
+
+.entry-header h3 {
+    color: var(--primary-light);
+    margin-bottom: 5px;
+}
+
+.entry-header a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.entry-header a:hover {
+    text-decoration: underline;
+    color: var(--primary);
+}
+
+.entry-password {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.entry-password input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid rgba(126, 87, 194, 0.3);
+    border-radius: 4px;
+    font-family: monospace;
+    background: rgba(30, 30, 30, 0.5);
+    color: var(--accent);
+}
+
+.entry-password button {
+    padding: 8px 16px;
+    background: rgba(45, 45, 45, 0.8);
+    color: var(--text-light);
+    border: 1px solid rgba(126, 87, 194, 0.3);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.entry-password button:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    padding: 8px;
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0.7;
+}
+
+.delete-btn:hover {
+    background: var(--danger);
+    color: white;
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(239, 83, 80, 0.3);
+}
+
+.password-options input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-light);
+    border-radius: 4px;
+    background: rgba(45, 45, 45, 0.7);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.password-options input[type="checkbox"]:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.password-options input[type="checkbox"]:checked::before {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.password-options input[type="checkbox"]:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 8px rgba(126, 87, 194, 0.3);
+}
+
+.entry-date {
+    margin-top: 10px;
+    color: rgba(224, 224, 224, 0.6);
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .password-options {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.notification {
+    background: rgba(45, 45, 45, 0.9);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--primary);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(120%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.notification.show {
+    transform: translateX(0);
+}
+.notification.success {
+    border-color: #4CAF50;
+}
+.notification.error {
+    border-color: #f44336;
+}
+.notification.warning {
+    border-color: #ff9800;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.modal-content {
+    background: rgba(45, 45, 45, 0.95);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-content h3 {
+    color: var(--primary-light);
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.cancel-btn, .confirm-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.cancel-btn {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.cancel-btn:hover {
+    background: rgba(126, 87, 194, 0.1);
+    transform: translateY(-2px);
+}
+
+.confirm-btn {
+    background: var(--danger);
+    border: 1px solid var(--danger);
+    color: white;
+}
+
+.confirm-btn:hover {
+    background: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 83, 80, 0.3);
+}
